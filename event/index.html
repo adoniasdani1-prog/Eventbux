@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventbux</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #b9b5ff, #e5d9ff);
+            min-height: 100vh;
+            color: #20202a;
+            padding: 50px 20px;
+        }
+
+        .background-dots {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            background-image: radial-gradient(#ffffff 1.5px, transparent 1.5px);
+            background-size: 10px 10px;
+            opacity: .55;
+        }
+
+        .dots-left {
+            top: 120px;
+            left: 8%;
+        }
+
+        .dots-right {
+            right: 8%;
+            bottom: 100px;
+        }
+
+        .circle {
+            position: fixed;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.15);
+        }
+
+        .circle-one {
+            top: 70px;
+            right: 8%;
+        }
+
+        .circle-two {
+            bottom: 40px;
+            left: 2%;
+            width: 150px;
+            height: 150px;
+        }
+
+        .website {
+            width: 850px;
+            max-width: 100%;
+            margin: auto;
+            background: white;
+            border-radius: 8px;
+            padding: 20px 35px 40px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 20px 50px rgba(57, 37, 120, .15);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .brand {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .account {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 9px;
+        }
+
+        .login {
+            color: #555;
+        }
+
+        .join {
+            background: #7047e8;
+            color: white;
+            padding: 8px 17px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .hero {
+            height: 245px;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+            background:
+                linear-gradient(90deg, rgba(0,0,0,.05), rgba(0,0,0,.65)),
+                url("https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=1200&q=85")
+                center / cover;
+        }
+
+        .hero-text {
+            position: absolute;
+            right: 35px;
+            top: 55px;
+            width: 220px;
+            color: white;
+        }
+
+        .hero-text h1 {
+            font-size: 31px;
+            line-height: 1.05;
+            margin-bottom: 10px;
+        }
+
+        .hero-text p {
+            font-size: 8px;
+            line-height: 1.5;
+            color: #ddd;
+        }
+
+        .search {
+            position: absolute;
+            left: 20px;
+            right: 20px;
+            bottom: 0;
+            height: 48px;
+            background: rgba(15, 18, 35, .88);
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            color: white;
+        }
+
+        .search-box {
+            padding: 8px 15px;
+            border-right: 1px solid rgba(255,255,255,.15);
+        }
+
+        .search-box span {
+            display: block;
+            font-size: 7px;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .search-box strong {
+            font-size: 8px;
+            font-weight: normal;
+        }
+
+        .events {
+            padding-top: 30px;
+        }
+
+        .events-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .events-top h2 {
+            font-size: 16px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter {
+            border: 1px solid #eee;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 7px;
+            color: #666;
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .event-card {
+            border: 1px solid #eee;
+            border-radius: 5px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .event-image {
+            height: 105px;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .event-image.one {
+            background-image: url("https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=600&q=80");
+        }
+
+        .event-image.two {
+            background-image: url("https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80");
+        }
+
+        .event-image.three {
+            background-image: url("https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80");
+        }
+
+        .event-image.four {
+            background-image: url("https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&w=600&q=80");
+        }
+
+        .event-image.five {
+            background-image: url("https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=600&q=80");
+        }
+
+        .event-image.six {
+            background-image: url("https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=600&q=80");
+        }
+
+        .price {
+            position: absolute;
+            top: 7px;
+            left: 7px;
+            background: white;
+            color: #333;
+            padding: 4px 7px;
+            border-radius: 3px;
+            font-size: 7px;
+            font-weight: bold;
+        }
+
+        .heart {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            width: 21px;
+            height: 21px;
+            background: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 21px;
+            font-size: 10px;
+        }
+
+        .event-info {
+            padding: 10px;
+        }
+
+        .date {
+            font-size: 7px;
+            color: #7047e8;
+            margin-bottom: 5px;
+        }
+
+        .event-info h3 {
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+
+        .event-info p {
+            color: #999;
+            font-size: 7px;
+            line-height: 1.4;
+        }
+
+        .side-card {
+            position: absolute;
+            z-index: 5;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 15px 35px rgba(65, 42, 120, .2);
+        }
+
+        .date-card {
+            width: 180px;
+            right: -120px;
+            top: 190px;
+            padding: 18px;
+        }
+
+        .date-card h3 {
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .date-card p {
+            font-size: 7px;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .calendar-link {
+            font-size: 8px;
+            color: #7047e8;
+            margin-bottom: 15px;
+        }
+
+        .book {
+            display: block;
+            width: 100%;
+            background: #7047e8;
+            color: white;
+            border-radius: 4px;
+            padding: 9px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 8px;
+            margin-bottom: 8px;
+        }
+
+        .promoter {
+            display: block;
+            width: 100%;
+            background: #f4f4f4;
+            color: #555;
+            border-radius: 4px;
+            padding: 9px;
+            text-align: center;
+            font-size: 8px;
+        }
+
+        .small-card {
+            width: 155px;
+            left: -90px;
+            bottom: 100px;
+            padding: 18px;
+            background: #7047e8;
+            color: white;
+        }
+
+        .small-card h3 {
+            font-size: 9px;
+            margin-bottom: 8px;
+        }
+
+        .small-card p {
+            font-size: 7px;
+            line-height: 1.5;
+            color: #ddd;
+            margin-bottom: 7px;
+        }
+
+        .small-card strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .checkout {
+            display: block;
+            background: white;
+            color: #7047e8;
+            text-decoration: none;
+            text-align: center;
+            padding: 9px;
+            border-radius: 4px;
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 1050px) {
+            .date-card {
+                right: 20px;
+            }
+
+            .small-card {
+                left: 20px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .website {
+                padding: 15px;
+            }
+
+            .hero {
+                height: 280px;
+            }
+
+            .hero-text {
+                right: 20px;
+                width: 180px;
+            }
+
+            .hero-text h1 {
+                font-size: 25px;
+            }
+
+            .search {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .search-box {
+                display: none;
+            }
+
+            .event-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .date-card,
+            .small-card {
+                display: none;
+            }
+
+            .account {
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .event-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                display: none;
+            }
+
+            .hero-text {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background-dots dots-left"></div>
+    <div class="background-dots dots-right"></div>
+
+    <div class="circle circle-one"></div>
+    <div class="circle circle-two"></div>
+
+    <main class="website">
+
+        <header>
+            <div class="brand">✈ Eventbux</div>
+
+            <div class="account">
+                <span class="login">Login</span>
+                <a href="#" class="join">Join Us</a>
+            </div>
+        </header>
+
+        <section class="hero">
+
+            <div class="hero-text">
+                <h1>MADE FOR<br>THOSE<br>WHO DO</h1>
+                <p>
+                    Find amazing events and discover
+                    experiences made for you.
+                </p>
+            </div>
+
+            <div class="search">
+
+                <div class="search-box">
+                    <span>Looking for</span>
+                    <strong>UI/UX Promotion</strong>
+                </div>
+
+                <div class="search-box">
+                    <span>Location</span>
+                    <strong>Jakarta Selatan</strong>
+                </div>
+
+                <div class="search-box">
+                    <span>When</span>
+                    <strong>Any date</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="events">
+
+            <div class="events-top">
+                <h2>Upcoming Events</h2>
+
+                <div class="filters">
+                    <div class="filter">Location ▼</div>
+                    <div class="filter">Event Type ▼</div>
+                    <div class="filter">Any Location ▼</div>
+                </div>
+            </div>
+
+            <div class="event-grid">
+
+                <div class="event-card">
+                    <div class="event-image one">
+                        <span class="price">$18.00</span>
+                        <span class="heart">♡</span>
+                    </div>
+                    <div class="event-info">
+                        <div class="date">18 SEP</div>
+                        <h3>Indonesia - Korea Conference</h3>
+                        <p>Jakarta Selatan, Jakarta</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-image two">
+                        <span class="price">FREE</span>
+                        <span class="heart">♡</span>
+                    </div>
+                    <div class="event-info">
+                        <div class="date">17 SEP</div>
+                        <h3>Dream World Wide in Jakarta</h3>
+                        <p>Jakarta Selatan, Jakarta</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-image three">
+                        <span class="price">$12.00</span>
+                        <span class="heart">♡</span>
+                    </div>
+                    <div class="event-info">
+                        <div class="date">16 SEP</div>
+                        <h3>Pesta Kembang Api</h3>
+                        <p>Jakarta Selatan, Jakarta</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-image four">
+                        <span class="price">$15.00</span>
+                        <span class="heart">♡</span>
+                    </div>
+                    <div class="event-info">
+                        <div class="date">20 SEP</div>
+                        <h3>Live Music Festival</h3>
+                        <p>Jakarta Selatan, Jakarta</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-image five">
+                        <span class="price">FREE</span>
+                        <span class="heart">♡</span>
+                    </div>
+                    <div class="event-info">
+                        <div class="date">22 SEP</div>
+                        <h3>Creative Design Workshop</h3>
+                        <p>Jakarta Selatan, Jakarta</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-image six">
+                        <span class="price">$20.00</span>
+                        <span class="heart">♡</span>
+                    </div>
+                    <div class="event-info">
+                        <div class="date">25 SEP</div>
+                        <h3>Music Night Festival</h3>
+                        <p>Jakarta Selatan, Jakarta</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="side-card date-card">
+            <h3>Date & Time</h3>
+            <p>Saturday, Sep 14, 2019 at 20:30 PM</p>
+            <div class="calendar-link">＋ Add to Calendar</div>
+            <a href="#" class="book">Book Now (Free)</a>
+            <div class="promoter">Promoter Program</div>
+        </div>
+
+        <div class="side-card small-card">
+            <h3>General Admission</h3>
+            <p>Sales end on Sep 20, 2019</p>
+            <strong>$100 <small>+ $7.50 Fee</small></strong>
+            <a href="#" class="checkout">Checkout Now</a>
+        </div>
+
+    </main>
+
+</body>
+</html>
